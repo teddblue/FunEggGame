@@ -1,0 +1,14 @@
+NOTES
+
+To Do:
+- import 64x64 body, test performance
+- yard build
+- house build
+- faster draw method research
+- fix bug: multi-directional sprites show incorrect top row, pushing other rows down 1, not showing bottom row
+
+Additions to Engine:
+- spacial audio working
+
+Additions to Core:
+- sprite z position, width, and height
