@@ -7,6 +7,7 @@
 		"Pyramid.ogg",
 		"Cube.ogg",
 		"Sphere.ogg",
+		"Chirp.ogg",
 		"GreatJob.ogg",
 		"SoFast.ogg"
 	],
@@ -39,7 +40,7 @@
 		"23.png",
 		"24.png",
 		"25.png",
-		"SkyBoxDay.png",
+		"SkyboxDay.png",
 		"hand/1.png",
 		"hand/2.png",
 		"hand/3.png",
@@ -51,7 +52,7 @@
 		"hand/HoldSphere.png",
 		"hand/deposit.png",
 		"hand/ok.png",
-		"SkyBoxNight.png",
+		"SkyboxNight.png",
 		"child/head.png",
 		"child/body.png"
 	],

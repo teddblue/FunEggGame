@@ -3,6 +3,7 @@ import * as Engine from "./Engine.js";
 
 var action = 0;
 var aTimer = 0;
+var aFrame = 0;
 var oldAction = 0;
 
 var blockStage = 0;
@@ -86,6 +87,7 @@ function manageBlocks(DTime){
         case 1:
             shape = Math.floor(Math.random()*3)
             Core.level.map[1].object.push({id:"shape",x:2.5,y:1.5,z:0,d:0,tile:(2+shape)})
+            if(ending==0){Core.playSound(3+shape)}
             console.log("shape made:", shape)
             blockStage = 2;
             break;
@@ -97,6 +99,7 @@ function manageAction(){
     if(action != oldAction){
         oldAction = action;
         aTimer = 0;
+        aFrame = 0;
     }
     switch(action){
         case 1:
@@ -107,6 +110,9 @@ function manageAction(){
             break;
         case 3:
             Core.Cam.overlay = 37;
+            if(aFrame == 1){
+                Core.playSound(Math.floor(Math.random()*2)+7)
+            }
             if(aTimer>0.5){
                 action = 4;
             }
@@ -124,22 +130,24 @@ function manageAction(){
 }
 
 export function Start(){
-    Core.playSound(0);
 };
 export function Update(DTime, frame){
     manageClick(DTime)
     manageBlocks(DTime)
 
+    if(frame == 6){
+        Core.playSound(0)
+    }
     if(Core.Secs > 100){
         if(stage == 0){
             console.log(love);
             Core.level.map[0].skybox = 38;
-            Core.level.map[0].object.splice(0,1)
-            Core.level.map[0].object.push({id:"head", x:6, y:7, z:1, d:0, tile:5})
-            Core.level.map[1].object.push({id:"head", x:6, y:7, z:1, d:0, tile:5})
-            Core.level.map[0].object.push({id:"body", x:6, y:7, z:0, d:0, tile:6})
-            Core.level.map[1].object.push({id:"body", x:6, y:7, z:0, d:0, tile:6})
-            child.d = Math.PI-Core.Cam.d
+            Core.level.map[0].object.splice(0,1);
+            Core.level.map[0].object.push({id:"head", x:6, y:7, z:1, d:0, tile:5});
+            Core.level.map[1].object.push({id:"head", x:6, y:7, z:1, d:0, tile:5});
+            Core.level.map[0].object.push({id:"body", x:6, y:7, z:0, d:0, tile:6});
+            Core.level.map[1].object.push({id:"body", x:6, y:7, z:0, d:0, tile:6});
+            child.d = Math.PI-Core.Cam.d;
             if(love<70){//100
                 //child isnt happy :( game continues...
                 ending = 1;
@@ -147,10 +155,11 @@ export function Update(DTime, frame){
                 Core.level.map[1].fog = {min: 1, max: 3, color: [0,0,0]};
             }else{
                 //child is happy :) game ends
+                Core.playSound(2);
                 ending = 2;
-            };
+            }
             stage = 1;
-        }
+        };
         if(ending==1){
             // if in map 0, walk to door
             // hide once in map 1
@@ -161,9 +170,9 @@ export function Update(DTime, frame){
             switch(stage){
                 case 1:
                     if(Core.Secs>105){
-                        child.vY = -2;
-                        child.d = Math.PI/2
-                    }
+                        child.vY = -2;;
+                        child.d = Math.PI/2;
+                    };
                     if(child.y<=0){
                         child.vY = 0;
                         child.map = 1;
@@ -177,7 +186,7 @@ export function Update(DTime, frame){
                     // go to player y and hall entrance x
                     // set stage to 3
                     if(Core.Cam.x >= 14){
-                        var y = Math.floor(Core.Cam.y)
+                        var y = Math.floor(Core.Cam.y);
                         if(y==6 || y==10 || y==14){
                             child.x = 9;
                             child.y = y + 0.5;
@@ -194,22 +203,23 @@ export function Update(DTime, frame){
                         child.d = Math.PI;
                         Core.Cam.walkSpeed = 0;
                         stage = 4;
-                    }
+                    };
                     break;
                 case 4:
                     // wait till close to player or off map
                     if(Math.abs(Core.Cam.x - child.x)<.5){
-                        child.vX = 0
-                    }
+                        child.vX = 0;
+                        Core.playSound(1);
+                    };
                     break;
             }
-            child.x += child.vX * DTime/1000
-            child.y += child.vY * DTime/1000
+            child.x += child.vX * DTime/1000;
+            child.y += child.vY * DTime/1000;
         }
         //console.log(Engine.getObjsWithId('head'))
         if(Engine.getObjsWithId("head").length>0){
-            var head = Core.Map.object[Engine.getObjsWithId("head")[0]]
-            var body = Core.Map.object[Engine.getObjsWithId("body")[0]]
+            var head = Core.Map.object[Engine.getObjsWithId("head")[0]];
+            var body = Core.Map.object[Engine.getObjsWithId("body")[0]];
             //console.log(head)
             if(Core.MapIdx == child.map){
                 head.x = child.x;
@@ -229,6 +239,7 @@ export function Update(DTime, frame){
         }
     }
 
-    manageAction()
-    aTimer += DTime/1000
+    manageAction();
+    aTimer += DTime/1000;
+    aFrame += 1;
 };
